@@ -19,13 +19,18 @@ function onSocketClose() {
   console.log('Disconnected from the Browser❌');
 }
 
+const sockets = [];
+const msgs = [];
+
 wss.on('connection', (socket) => {
+  sockets.push(socket);
   console.log('Connected to Browser ✅');
   socket.on('close', onSocketClose);
   socket.on('message', (message) => {
-    //프론트에서 받은 메세지를 다시 프론트로 보냄
-    socket.send(message.toString());
+    //프론트에서 받은 메세지를 배열로 저장해 다시 프론트로 보냄 (다른 브라우저에서 보내도 같은 wws서버로 보내면 확인할 수 있음)
+    sockets.forEach((aSocket) => aSocket.send(message.toString()));
   });
+  console.log(sockets);
 });
 
 server.listen(3000, handleListen);
