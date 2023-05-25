@@ -32,9 +32,13 @@ socket.addEventListener('close', () => {
 function handleSubmit(e) {
   e.preventDefault();
   const input = messageForm.querySelector('input');
-
   //1. 프론트에서 백엔드로 보냄
   socket.send(makeMessage('new_message', input.value));
+
+  //4. 내가 보내는 메세지는 굳이 서버에 전송하지 않고 렌더링
+  const li = document.createElement('li');
+  li.innerText = `You: ${input.value}`;
+  messageList.append(li);
 }
 
 function handleNickSubmit(e) {
