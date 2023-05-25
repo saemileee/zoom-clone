@@ -19,16 +19,13 @@ function onSocketClose() {
   console.log('Disconnected from the Browser❌');
 }
 
-function onSocketMessage(message) {
-  console.log(message.toString('utf8'));
-}
-
 wss.on('connection', (socket) => {
   console.log('Connected to Browser ✅');
   socket.on('close', onSocketClose);
-  socket.on('message', onSocketMessage);
-  //백엔드에서 프론트로 보냄
-  socket.send('Connected to Browser ✅');
+  socket.on('message', (message) => {
+    //프론트에서 받은 메세지를 다시 프론트로 보냄
+    socket.send(message.toString());
+  });
 });
 
 server.listen(3000, handleListen);
