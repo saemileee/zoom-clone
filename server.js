@@ -22,8 +22,12 @@ wsServer.on("connection", (socket) => {
     console.log(`Socket Evnet:${e}`);
   });
   socket.on("enter_room", (roomName, done) => {
+    //생성한 방으로 join
+    //실제로 구현 시 roomName말고 roomID를 보내야할 듯
     socket.join(roomName);
     done();
+    //누군가 같은 방에 입장했을 때 해당 메시지를 보냄
+    socket.to(roomName).emit("welcome");
   });
 });
 
